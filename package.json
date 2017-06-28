@@ -1,0 +1,23 @@
+{
+  "name": "react-map",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muneneevans/react-map-example.git"
+  },
+  "keywords": [
+    "map",
+    "d3"
+  ],
+  "author": "overmars",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/muneneevans/react-map-example/issues"
+  },
+  "homepage": "https://github.com/muneneevans/react-map-example#readme"
+}
