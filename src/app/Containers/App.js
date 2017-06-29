@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import WorldMap from "./WorldMap";
 
 export default class App extends Component{
     render(){
         return(
             <div>
-                <h1>App</h1>
+                <WorldMap/>
             </div>
         );
     }
