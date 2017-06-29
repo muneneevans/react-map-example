@@ -18,7 +18,8 @@ class WorldMap extends Component{
 
 
     componentDidMount(){
-        fetch('http://localhost:8000/maps/api/countries/1/plain')
+        // fetch('http://localhost:8000/maps/api/countries/1/plain')
+        fetch('http://localhost:8000/maps/api/countries/kenya/county')
             .then(response => {
                 if(response.status != 200){
                     console.log('there was an error fetching the data: ' + response.status );
@@ -28,7 +29,7 @@ class WorldMap extends Component{
                 response.json().then(worldData => {
                     console.log(worldData)
                     this.setState({
-                        worldData: feature(worldData.map_json, worldData.map_json.objects.kenya2).features
+                        worldData: feature(worldData, worldData.objects.kenya2).features
                     })
                 })
             })
