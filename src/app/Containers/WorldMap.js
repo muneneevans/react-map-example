@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
-
+import worldData from "./kenya"
 class WorldMap extends Component {
     constructor() {
         super();
@@ -33,7 +33,7 @@ class WorldMap extends Component {
         //             })
         //         })
         //     })
-        var worldData = require('./kenya.json');
+        
         this.setState({
             worldData: feature(worldData, worldData.objects.kenya).features
         })
