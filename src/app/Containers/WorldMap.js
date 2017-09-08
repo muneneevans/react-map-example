@@ -6,14 +6,35 @@ class WorldMap extends Component {
     constructor() {
         super();
         this.state = {
+            featureCollection: {},
             worldData: []
         }
     }
 
-    projection() {
-        return geoMercator()
-            .scale(900)
-            .translate([800 / 4, 450 / 2])
+    projection(data) {
+        // return geoMercator()
+        //     .scale(900)
+        //     .translate([800 / 4, 450 / 2])
+        let height = 1000;
+        let width = 1000;
+        // Create a unit projection.
+        var projection = geoMercator()
+            .scale(1)
+            .translate([0, 0]);
+
+        // Create a path generator.
+        var path = geoPath()
+            .projection(projection);
+
+        // Compute the bounds of a feature of interest, then derive scale & translate.
+        var b = path.bounds(data),
+            s = .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+            t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+
+        // Update the projection to use computed scale & translate.
+        return projection
+            .scale(s)
+            .translate(t);
     }
 
 
@@ -33,22 +54,24 @@ class WorldMap extends Component {
         //             })
         //         })
         //     })
-        
+
+        let featureCollection = feature(worldData, worldData.objects.kenya);
         this.setState({
-            worldData: feature(worldData, worldData.objects.kenya).features
+            featureCollection: featureCollection,
+            worldData: featureCollection.features
         })
     }
 
     render() {
-        console.log(this.state.worldData)
+        let p = this.projection(this.state.featureCollection);
         return (
-            <svg width={800} height={450} viewBox="0 0 1000 450">
+            <svg style={{height: "auto", width: "auto", maxHeight:"100%", maxWidth: "100%"}} viewBox="0 0 1000 1000">
                 <g className="countries">
                     {
                         this.state.worldData.map((d, i) => (
                             <path
                                 key={`path-${i}`}
-                                d={geoPath().projection(this.projection())(d)}
+                                d={geoPath().projection(p)(d)}
                                 className="country"
                                 fill={`rgba(38,50,56,${1 / this.state.worldData.length * i})`}
                                 stroke="#FFFFFF"
@@ -59,8 +82,8 @@ class WorldMap extends Component {
                 </g>
                 <g className="markers">
                     <circle
-                        cx={this.projection()([8, 48])[0]}
-                        cy={this.projection()([8, 48])[1]}
+                        cx={p([8, 48])[0]}
+                        cy={p([8, 48])[1]}
                         r={10}
                         fill="#E91E63"
                         className="marker"
